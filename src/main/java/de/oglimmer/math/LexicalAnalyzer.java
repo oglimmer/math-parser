@@ -1,71 +1,107 @@
 package de.oglimmer.math;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class LexicalAnalyzer {
 
+    public List<String> parseToTokens(String input) {
+        List<String> nodes = new ArrayList<>();
+        for (int pos = 0; pos < input.length(); pos++) {
+            char currentC = input.charAt(pos);
+            Character nextC = pos < input.length() - 1 ? input.charAt(pos + 1) : null;
+            read(currentC, nextC);
+            if (tokenCompleted()) {
+                nodes.add(nextToken());
+            }
+        }
+        return nodes;
+    }
+
     enum State {
-        EMPTY, DIGIT_READING, DIGIT_COMPLETED, PLUS, MINUS
+        EMPTY, DIGIT_READING, DIGIT_COMPLETED, OPERATION, PARENTHESIS_OPEN, PARENTHESIS_CLOSED
     }
 
     private StringBuilder buff;
     private State state = State.EMPTY;
 
-    public void read(char currentC, Character nextC) {
+    private void read(char readCharacter, Character nextC) {
         switch (state) {
             case EMPTY:
-            case PLUS:
-            case MINUS:
-                processEmptyPlusMinus(currentC, nextC);
+            case PARENTHESIS_OPEN:
+            case OPERATION:
+                inStateEmptyOrOperator(readCharacter, nextC);
                 break;
             case DIGIT_READING:
-                processReadingInProgress(currentC, nextC);
+                inStateDigitReadingInProgress(readCharacter, nextC);
                 break;
             case DIGIT_COMPLETED:
-                processDigitReadingCompleted(currentC);
+            case PARENTHESIS_CLOSED:
+                inStateDigitReadingCompleted(readCharacter);
                 break;
         }
     }
 
-    private void processDigitReadingCompleted(char currentC) {
-        if (currentC == '+') {
-            state = State.PLUS;
-        } else if (currentC == '-') {
-            state = State.MINUS;
+    private void inStateDigitReadingCompleted(char readCharacter) {
+        if (isOperator(readCharacter)) {
+            state = State.OPERATION;
+        } else if (readCharacter == ')') {
+            state = State.PARENTHESIS_CLOSED;
         } else {
             throw new RuntimeException("Illegal state");
         }
-        buff = new StringBuilder(Character.toString(currentC));
+        buff = new StringBuilder(Character.toString(readCharacter));
     }
 
-    private void processReadingInProgress(char currentC, Character nextC) {
-        if (isDigit(currentC) && nextC != null && isDigit(nextC)) {
-            buff.append(currentC);
-        } else if (isDigit(currentC) && (nextC == null || nextC == '+' || nextC == '-')) {
-            buff.append(currentC);
-            state = State.DIGIT_COMPLETED;
-        } else if (currentC == '+' || currentC == '-') {
+    private void inStateDigitReadingInProgress(char readCharacter, Character nextC) {
+        if (isOperator(readCharacter)) {
             throw new RuntimeException("Illegal state");
         }
+        if (readCharacter == '(') {
+            throw new RuntimeException("Illegal state");
+        }
+        if (isDigit(readCharacter)) {
+            buff.append(readCharacter);
+        }
+        if (nextC == null || isOperator(nextC) || nextC == ')') {
+            state = State.DIGIT_COMPLETED;
+        }
+    }
+
+    private void inStateEmptyOrOperator(char readCharacter, Character nextC) {
+        if (isOperator(readCharacter) && !isAlgebraicSign(readCharacter)) {
+            throw new RuntimeException("Illegal state");
+        }
+        if (readCharacter == ')') {
+            throw new RuntimeException("Illegal state");
+        }
+        buff = new StringBuilder();
+        if (isDigit(readCharacter) || isAlgebraicSign(readCharacter) || readCharacter == '(') {
+            buff.append(readCharacter);
+        }
+        if (readCharacter == '(') {
+            state = State.PARENTHESIS_OPEN;
+        } else if (nextC != null && isDigit(nextC)) {
+            state = State.DIGIT_READING;
+        } else if (nextC == null || isOperator(nextC) || nextC == ')') {
+            state = State.DIGIT_COMPLETED;
+        }
+    }
+
+    private boolean isOperator(char c) {
+        return c == '+' || c == '-' || c == '*' || c == '/';
     }
 
     private boolean isDigit(char c) {
         return Character.isDigit(c) || c == '.';
     }
 
-    private void processEmptyPlusMinus(char currentC, Character nextC) {
-        buff = new StringBuilder();
-        if (isDigit(currentC) && nextC != null && isDigit(nextC)) {
-            buff.append(currentC);
-            state = State.DIGIT_READING;
-        } else if (isDigit(currentC) && (nextC == null || nextC == '+' || nextC == '-')) {
-            buff.append(currentC);
-            state = State.DIGIT_COMPLETED;
-        } else if (currentC == '+' || currentC == '-') {
-            throw new RuntimeException("Must start with digit.");
-        }
+    private boolean isAlgebraicSign(char c) {
+        return c == '+' || c == '-';
     }
 
     public boolean tokenCompleted() {
-        return state == State.DIGIT_COMPLETED || state == State.PLUS || state == State.MINUS;
+        return state == State.DIGIT_COMPLETED || state == State.OPERATION || state == State.PARENTHESIS_OPEN || state == State.PARENTHESIS_CLOSED;
     }
 
     public String nextToken() {

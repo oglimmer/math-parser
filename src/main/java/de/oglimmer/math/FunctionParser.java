@@ -1,42 +1,43 @@
 package de.oglimmer.math;
 
 
+import de.oglimmer.math.astnode.Expression;
+import de.oglimmer.math.token.Token;
+
+import java.util.List;
+
 public class FunctionParser {
 
+    private static boolean debug = false;
+
     public static void main(String... args) {
+        if (args == null || args.length < 1 || args[0] == null) {
+            System.out.println("usage: needs parameter with math function");
+            return;
+        }
         String input = args[0];
-        Expression n = new FunctionParser().parse(input);
-        System.out.println(n);
+        Expression exp = new FunctionParser().parse(input);
+        System.out.println(exp.resolve());
     }
 
     private LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer();
+    private ASTBuilder astBuilder = new ASTBuilder();
+    private TokenBuilder tokenBuilder = new TokenBuilder();
 
     public Expression parse(String input) {
-        Expression returnExpression = null;
-        for (int pos = 0; pos < input.length(); pos++) {
-            returnExpression = processCharacter(input, returnExpression, pos);
-        }
-        return returnExpression;
+        List<String> tokenizedStrings = lexicalAnalyzer.parseToTokens(input);
+        debug(tokenizedStrings);
+        List<Token> tokens = tokenBuilder.convert(tokenizedStrings);
+        debug(tokens);
+        Expression expression = astBuilder.tokensToExpression(tokens);
+        debug(expression);
+        return expression;
     }
 
-    private Expression processCharacter(String input, Expression previousExpression, int pos) {
-        char currentC = input.charAt(pos);
-        Character nextC = pos < input.length() - 1 ? input.charAt(pos + 1) : null;
-        lexicalAnalyzer.read(currentC, nextC);
-        if (lexicalAnalyzer.tokenCompleted()) {
-            Expression newExpression = ExpressionBuilder.fromString(lexicalAnalyzer.nextToken());
-            previousExpression = addExpression(previousExpression, newExpression);
+    private void debug(Object msg) {
+        if (debug) {
+            System.out.println(msg);
         }
-        return previousExpression;
-    }
-
-    private Expression addExpression(Expression previousExpression, Expression newExpression) {
-        if (previousExpression == null) {
-            previousExpression = newExpression;
-        } else {
-            previousExpression = previousExpression.add(newExpression);
-        }
-        return previousExpression;
     }
 
 }

@@ -1,5 +1,6 @@
 package de.oglimmer.math;
 
+import de.oglimmer.math.astnode.Expression;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -45,6 +46,83 @@ public class IntegerTest {
         String input = "123+23-33-13+100+5-25";
         Expression n = new FunctionParser().parse(input);
         Assertions.assertEquals(180d, n.resolve());
+    }
+
+    @Test
+    public void simpleMultiplication() {
+        String input = "6*4";
+        Expression n = new FunctionParser().parse(input);
+        Assertions.assertEquals(24d, n.resolve());
+    }
+
+    @Test
+    public void doubleMultiplication() {
+        String input = "6*4*3";
+        Expression n = new FunctionParser().parse(input);
+        Assertions.assertEquals(72d, n.resolve());
+    }
+
+    @Test
+    public void addingAndMultiplication() {
+        String input = "2+3*4";
+        Expression n = new FunctionParser().parse(input);
+        Assertions.assertEquals(14d, n.resolve());
+    }
+
+    @Test
+    public void addingAndMultiplication2() {
+        String input = "3*4+2";
+        Expression n = new FunctionParser().parse(input);
+        Assertions.assertEquals(14d, n.resolve());
+    }
+
+    @Test
+    public void addingAndMultiplication3() {
+        String input = "3*4+2*4";
+        Expression n = new FunctionParser().parse(input);
+        Assertions.assertEquals(20d, n.resolve());
+    }
+
+    @Test
+    public void addingAndMultiplication5() {
+        String input = "3*4+2*4+8";
+        Expression n = new FunctionParser().parse(input);
+        Assertions.assertEquals(28d, n.resolve());
+    }
+
+    @Test
+    public void addingAndMultiplication6() {
+        String input = "2+3*4+2*4+8";
+        Expression n = new FunctionParser().parse(input);
+        Assertions.assertEquals(30d, n.resolve());
+    }
+
+    @Test
+    public void addingAndSubtractionAndMultiplication() {
+        String input = "30-2+3*4+2*4+8";
+        Expression n = new FunctionParser().parse(input);
+        Assertions.assertEquals(56d, n.resolve());
+    }
+
+    @Test
+    public void addingNegativeInteger() {
+        String input = "2+-1";
+        Expression n = new FunctionParser().parse(input);
+        Assertions.assertEquals(1d, n.resolve());
+    }
+
+    @Test
+    public void addingNegativeIntegerToNegativeNumber() {
+        String input = "-2+-1";
+        Expression n = new FunctionParser().parse(input);
+        Assertions.assertEquals(-3d, n.resolve());
+    }
+
+    @Test
+    public void multiplyNegativeIntegerToNegativeNumber() {
+        String input = "-2*-1";
+        Expression n = new FunctionParser().parse(input);
+        Assertions.assertEquals(2d, n.resolve());
     }
 
 }

@@ -4,6 +4,7 @@ package de.oglimmer.math;
 import de.oglimmer.math.astnode.Expression;
 import de.oglimmer.math.token.Token;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class FunctionParser {
@@ -16,8 +17,19 @@ public class FunctionParser {
             return;
         }
         String input = args[0];
+        HashMap<String, Double> vars = createVarMap(args);
         Expression exp = new FunctionParser().parse(input);
-        System.out.println(exp.resolve());
+        System.out.println(exp.resolve(vars));
+    }
+
+    private static HashMap<String, Double> createVarMap(String[] args) {
+        HashMap<String, Double> vars = new HashMap<>();
+        for (int i = 2; i < args.length; i += 2) {
+            if (args[i - 1] != null && args[i] != null) {
+                vars.put(args[i - 1], Double.parseDouble(args[i]));
+            }
+        }
+        return vars;
     }
 
     private LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer();

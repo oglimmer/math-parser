@@ -1,5 +1,7 @@
 package de.oglimmer.math.astnode;
 
+import java.util.Map;
+
 public class BinaryOperationExpression implements Expression {
 
     private final Expression op1;
@@ -43,8 +45,8 @@ public class BinaryOperationExpression implements Expression {
     }
 
     @Override
-    public double resolve() {
-        return op.resolve(op1, op2);
+    public double resolve(Map<String, Double> vars) {
+        return op.resolve(vars, op1, op2);
     }
 
     @Override

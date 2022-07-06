@@ -2,23 +2,27 @@ package de.oglimmer.math.astnode;
 
 import java.util.Map;
 
-public class Number implements Expression {
-    private final double val;
+public class Variable implements Expression {
+    private final String name;
 
-    public Number(double val) {
-        this.val = val;
+    public Variable(String name) {
+        this.name = name;
     }
 
     @Override
     public Expression add(ASTNode toAdd) {
         if (!(toAdd instanceof Operation)) {
-            throw new RuntimeException("illegal class " + toAdd.getClass().getName() + " on val " + val);
+            throw new RuntimeException("illegal class " + toAdd.getClass().getName() + " on name " + name);
         }
         return new BinaryOperationExpression(this, (Operation) toAdd);
     }
 
     @Override
     public double resolve(Map<String, Double> vars) {
+        Double val = vars.get(name);
+        if (val == null) {
+            throw new RuntimeException("Cannot find value for variable " + name);
+        }
         return val;
     }
 
@@ -29,6 +33,6 @@ public class Number implements Expression {
 
     @Override
     public String toString() {
-        return Double.toString(val);
+        return name;
     }
 }

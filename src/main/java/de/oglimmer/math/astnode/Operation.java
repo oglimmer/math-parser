@@ -1,5 +1,7 @@
 package de.oglimmer.math.astnode;
 
+import java.util.Map;
+
 public abstract class Operation implements ASTNode {
 
     private final String symbol;
@@ -14,7 +16,7 @@ public abstract class Operation implements ASTNode {
         return precedence;
     }
 
-    abstract double resolve(Expression... expressions);
+    abstract double resolve(Map<String, Double> vars, Expression... expressions);
 
     @Override
     public boolean openForInput() {

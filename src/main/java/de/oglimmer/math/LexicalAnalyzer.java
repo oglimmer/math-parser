@@ -19,7 +19,7 @@ public class LexicalAnalyzer {
     }
 
     enum State {
-        EMPTY, DIGIT_READING, DIGIT_COMPLETED, OPERATION, PARENTHESIS_OPEN, PARENTHESIS_CLOSED
+        EMPTY, DIGIT_READING, DIGIT_COMPLETED, OPERATION, PARENTHESIS_OPEN, PARENTHESIS_CLOSED, VAR_READING, VAR_COMPLETED
     }
 
     private StringBuilder buff;
@@ -32,9 +32,13 @@ public class LexicalAnalyzer {
             case OPERATION:
                 inStateEmptyOrOperator(readCharacter, nextC);
                 break;
+            case VAR_READING:
+                inStateVarReadingInProgress(readCharacter, nextC);
+                break;
             case DIGIT_READING:
                 inStateDigitReadingInProgress(readCharacter, nextC);
                 break;
+            case VAR_COMPLETED:
             case DIGIT_COMPLETED:
             case PARENTHESIS_CLOSED:
                 inStateDigitReadingCompleted(readCharacter);
@@ -68,6 +72,21 @@ public class LexicalAnalyzer {
         }
     }
 
+    private void inStateVarReadingInProgress(char readCharacter, Character nextC) {
+        if (isOperator(readCharacter)) {
+            throw new RuntimeException("Illegal state");
+        }
+        if (readCharacter == '(') {
+            throw new RuntimeException("Illegal state");
+        }
+        if (isAlpha(readCharacter)) {
+            buff.append(readCharacter);
+        }
+        if (nextC == null || isOperator(nextC) || nextC == ')') {
+            state = State.VAR_COMPLETED;
+        }
+    }
+
     private void inStateEmptyOrOperator(char readCharacter, Character nextC) {
         if (isOperator(readCharacter) && !isAlgebraicSign(readCharacter)) {
             throw new RuntimeException("Illegal state");
@@ -76,15 +95,19 @@ public class LexicalAnalyzer {
             throw new RuntimeException("Illegal state");
         }
         buff = new StringBuilder();
-        if (isDigit(readCharacter) || isAlgebraicSign(readCharacter) || readCharacter == '(') {
+        if (isDigit(readCharacter) || isAlgebraicSign(readCharacter) || readCharacter == '(' || isAlpha(readCharacter)) {
             buff.append(readCharacter);
         }
         if (readCharacter == '(') {
             state = State.PARENTHESIS_OPEN;
         } else if (nextC != null && isDigit(nextC)) {
             state = State.DIGIT_READING;
-        } else if (nextC == null || isOperator(nextC) || nextC == ')') {
+        } else if (nextC != null && isAlpha(nextC)) {
+            state = State.VAR_READING;
+        } else if (isDigit(readCharacter) && (nextC == null || isOperator(nextC) || nextC == ')')) {
             state = State.DIGIT_COMPLETED;
+        } else if (isAlpha(readCharacter) && (nextC == null || isOperator(nextC) || nextC == ')')) {
+            state = State.VAR_COMPLETED;
         }
     }
 
@@ -96,12 +119,16 @@ public class LexicalAnalyzer {
         return Character.isDigit(c) || c == '.';
     }
 
+    private boolean isAlpha(char c) {
+        return Character.isAlphabetic(c);
+    }
+
     private boolean isAlgebraicSign(char c) {
         return c == '+' || c == '-';
     }
 
     public boolean tokenCompleted() {
-        return state == State.DIGIT_COMPLETED || state == State.OPERATION || state == State.PARENTHESIS_OPEN || state == State.PARENTHESIS_CLOSED;
+        return state != State.EMPTY && state != State.VAR_READING && state != State.DIGIT_READING;
     }
 
     public String nextToken() {

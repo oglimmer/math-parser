@@ -1,8 +1,10 @@
 package de.oglimmer.math.astnode;
 
+import java.util.Map;
+
 public interface Expression extends ASTNode {
 
     Expression add(ASTNode toAdd);
 
-    double resolve();
+    double resolve(Map<String, Double> vars);
 }

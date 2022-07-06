@@ -1,5 +1,7 @@
 package de.oglimmer.math.astnode;
 
+import java.util.Map;
+
 public class Parenthesis implements Expression {
 
     private Expression nestedExp;
@@ -24,8 +26,8 @@ public class Parenthesis implements Expression {
     }
 
     @Override
-    public double resolve() {
-        return nestedExp.resolve();
+    public double resolve(Map<String, Double> vars) {
+        return nestedExp.resolve(vars);
     }
 
     @Override

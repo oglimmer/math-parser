@@ -1,10 +1,46 @@
 package de.oglimmer.math.token;
 
-import de.oglimmer.math.astnode.ASTNode;
+import de.oglimmer.math.astnode.Number;
+import de.oglimmer.math.astnode.*;
 
-abstract public class Token {
+public class Token {
 
-    abstract public ASTNode toASTNode();
+    private String data;
+    private Type type;
+    public Token(String data, Type type) {
+        this.data = data;
+        this.type = type;
+    }
+
+    public ASTNode toASTNode() {
+        switch (type) {
+            case CONSTANT:
+                return new Constant(data);
+            case NUMBER:
+                return new Number(Double.parseDouble(data));
+            case OPERATOR:
+                return new Operation(data);
+            case PARENTHESIS:
+                return new Parenthesis();
+            case POSTFIX_OPERATOR:
+                return new PostfixOperation(data);
+            case VARIABLE:
+                return new Variable(data);
+        }
+        return null;
+    }
+
+    @Override
+    public String toString() {
+        return "Token{" +
+                "type='" + type + '\'' +
+                "data='" + data + '\'' +
+                '}';
+    }
+
+    public enum Type {
+        CONSTANT, NUMBER, OPERATOR, PARENTHESIS, POSTFIX_OPERATOR, VARIABLE;
+    }
 
 }
 

@@ -4,6 +4,9 @@ import java.util.Map;
 
 public class Parenthesis implements Expression {
 
+    public static final char OPEN = '(';
+    public static final char CLOSE = ')';
+
     private Expression nestedExp;
 
     private boolean closed;
@@ -33,6 +36,11 @@ public class Parenthesis implements Expression {
     @Override
     public boolean openForInput() {
         return !closed;
+    }
+
+    @Override
+    public Expression simplify() {
+        return nestedExp;
     }
 
     @Override

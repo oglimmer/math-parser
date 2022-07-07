@@ -1,7 +1,5 @@
-package de.oglimmer.math;
+package de.oglimmer.math.astnode;
 
-import de.oglimmer.math.astnode.ASTNode;
-import de.oglimmer.math.astnode.Expression;
 import de.oglimmer.math.token.Token;
 
 import java.util.List;
@@ -10,9 +8,10 @@ import java.util.List;
 public class ASTBuilder {
 
     public Expression tokensToExpression(List<Token> tokens) {
-        return tokens.stream().reduce(null,
+        Expression resultExp = tokens.stream().reduce(null,
                 (result, token) -> accumulator(result, token),
                 (result, element) -> result);
+        return resultExp.simplify();
     }
 
     private Expression accumulator(Expression result, Token token) {

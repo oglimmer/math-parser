@@ -1,7 +1,9 @@
 package de.oglimmer.math;
 
 
+import de.oglimmer.math.astnode.ASTBuilder;
 import de.oglimmer.math.astnode.Expression;
+import de.oglimmer.math.token.LexicalAnalyzer;
 import de.oglimmer.math.token.Token;
 
 import java.util.HashMap;
@@ -10,10 +12,12 @@ import java.util.List;
 public class FunctionParser {
 
     private static boolean debug = false;
+    private LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer();
+    private ASTBuilder astBuilder = new ASTBuilder();
 
     public static void main(String... args) {
         if (args == null || args.length < 1 || args[0] == null) {
-            System.out.println("usage: needs parameter with math function");
+            System.out.println("usage: 1st parameter must be a mathematical function (e.g. \"2+3\")");
             return;
         }
         String input = args[0];
@@ -32,18 +36,16 @@ public class FunctionParser {
         return vars;
     }
 
-    private LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer();
-    private ASTBuilder astBuilder = new ASTBuilder();
-    private TokenBuilder tokenBuilder = new TokenBuilder();
-
     public Expression parse(String input) {
-        List<String> tokenizedStrings = lexicalAnalyzer.parseToTokens(input);
-        debug(tokenizedStrings);
-        List<Token> tokens = tokenBuilder.convert(tokenizedStrings);
+        List<Token> tokens = lexicalAnalyzer.parseToTokens(cleanWhitespaces(input));
         debug(tokens);
         Expression expression = astBuilder.tokensToExpression(tokens);
         debug(expression);
         return expression;
+    }
+
+    private String cleanWhitespaces(String input) {
+        return input.replaceAll("\\s\r\n", "");
     }
 
     private void debug(Object msg) {

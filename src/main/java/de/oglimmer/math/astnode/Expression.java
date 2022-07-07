@@ -7,4 +7,6 @@ public interface Expression extends ASTNode {
     Expression add(ASTNode toAdd);
 
     double resolve(Map<String, Double> vars);
+
+    Expression simplify();
 }

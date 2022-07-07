@@ -127,4 +127,18 @@ public class IntegerTest {
         Assertions.assertEquals(2d, n.resolve(new HashMap<>()));
     }
 
+    @Test
+    public void simplePower() {
+        String input = "2^3";
+        Expression n = new FunctionParser().parse(input);
+        Assertions.assertEquals(8d, n.resolve(new HashMap<>()));
+    }
+
+    @Test
+    public void addingMultiplicationParenthisesPower() {
+        String input = "2+2^(3+1)*5";
+        Expression n = new FunctionParser().parse(input);
+        Assertions.assertEquals(82d, n.resolve(new HashMap<>()));
+    }
+
 }

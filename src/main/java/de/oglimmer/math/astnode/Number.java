@@ -28,6 +28,11 @@ public class Number implements Expression {
     }
 
     @Override
+    public Expression simplify() {
+        return this;
+    }
+
+    @Override
     public String toString() {
         return Double.toString(val);
     }

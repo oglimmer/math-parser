@@ -57,5 +57,11 @@ public class ParenthesisTest {
         Assertions.assertEquals(-2d, n.resolve(new HashMap<>()));
     }
 
+    @Test
+    public void precedenceOfPowerToMultiplication() {
+        String input = "(2+3)*4^2";
+        Expression n = new FunctionParser().parse(input);
+        Assertions.assertEquals(80d, n.resolve(new HashMap<>()));
+    }
 
 }

@@ -5,8 +5,8 @@ import java.util.Map;
 public class BinaryOperationExpression implements Expression {
 
     private final Expression op1;
-    private Expression op2;
     private final Operation op;
+    private Expression op2;
 
     public BinaryOperationExpression(Expression op1, Operation op) {
         this.op1 = op1;
@@ -55,8 +55,13 @@ public class BinaryOperationExpression implements Expression {
     }
 
     @Override
+    public Expression simplify() {
+        return this;
+    }
+
+    @Override
     public String toString() {
-        return op1.toString() + op + op2;
+        return Parenthesis.OPEN + op1.toString() + op + op2 + Parenthesis.CLOSE;
     }
 
 }

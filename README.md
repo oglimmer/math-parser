@@ -18,3 +18,11 @@ java -cp target/classes de.oglimmer.math.FunctionParser "((2+3)*-3)+2+x*y*sin(pi
 ```
 
 (First parameter is the function, any 2nd and 3rd is a variable and its value)
+
+## How it works
+
+Step 1 - the lexical analysis is done in [LexicalAnalyzer.java](src/main/java/de/oglimmer/math/token/LexicalAnalyzer.java) and the resulting objects are [Token.java](src/main/java/de/oglimmer/math/token/Token.java).
+
+Step 2 - the conversion from tokens to AST is done from a method inside of [Token.java](src/main/java/de/oglimmer/math/token/Token.java) `public ASTNode toASTNode() {...}` and by using the method `Expression add(ASTNode toAdd)` on the first [Expression.java](src/main/java/de/oglimmer/math/astnode/Expression.java) with the subsequent [ASTNode.java](src/main/java/de/oglimmer/math/astnode/ASTNode.java).
+
+![Diagram](diagram.png)

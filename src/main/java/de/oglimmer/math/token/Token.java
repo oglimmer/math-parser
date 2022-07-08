@@ -21,7 +21,7 @@ public class Token {
             case OPERATOR:
                 return new Operation(data);
             case PARENTHESIS:
-                return new Parenthesis();
+                return new Parenthesis(data.charAt(0));
             case POSTFIX_OPERATOR:
                 return new PostfixOperation(data);
             case VARIABLE:

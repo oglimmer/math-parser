@@ -7,6 +7,7 @@ public class PostfixOperation implements Expression {
 
     protected Expression nestedExp;
     private Type type;
+
     public PostfixOperation(String name) {
         this.type = Type.valueOf(name.toUpperCase());
     }
@@ -41,6 +42,11 @@ public class PostfixOperation implements Expression {
     @Override
     public Expression simplify() {
         return this;
+    }
+
+    @Override
+    public void validate() {
+        nestedExp.validate();
     }
 
     @Override

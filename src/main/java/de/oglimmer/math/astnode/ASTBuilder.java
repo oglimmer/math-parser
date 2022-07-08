@@ -11,6 +11,7 @@ public class ASTBuilder {
         Expression resultExp = tokens.stream().reduce(null,
                 (result, token) -> accumulator(result, token),
                 (result, element) -> result);
+        resultExp.validate();
         return resultExp.simplify();
     }
 

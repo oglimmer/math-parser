@@ -1,5 +1,7 @@
 package de.oglimmer.math.astnode;
 
+import de.oglimmer.math.InvalidFormulaException;
+
 import java.util.Map;
 
 public class BinaryOperationExpression implements Expression {
@@ -57,6 +59,15 @@ public class BinaryOperationExpression implements Expression {
     @Override
     public Expression simplify() {
         return this;
+    }
+
+    @Override
+    public void validate() {
+        if (op2 == null) {
+            throw new InvalidFormulaException("Missing second operand on " + this);
+        }
+        op1.validate();
+        op2.validate();
     }
 
     @Override

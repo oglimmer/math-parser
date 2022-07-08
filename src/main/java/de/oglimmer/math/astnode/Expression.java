@@ -9,4 +9,7 @@ public interface Expression extends ASTNode {
     double resolve(Map<String, Double> vars);
 
     Expression simplify();
+
+    default void validate() {
+    }
 }

@@ -1,9 +1,7 @@
 package de.oglimmer.math.token;
 
-import de.oglimmer.math.astnode.Constant;
-import de.oglimmer.math.astnode.Operation;
-import de.oglimmer.math.astnode.Parenthesis;
-import de.oglimmer.math.astnode.PostfixOperation;
+import de.oglimmer.math.InvalidFormulaException;
+import de.oglimmer.math.astnode.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,7 +82,7 @@ public class LexicalAnalyzer {
         } else if (readCharacter == Parenthesis.CLOSE) {
             state = State.PARENTHESIS_CLOSED;
         } else {
-            throw new RuntimeException("Illegal state. State " + state);
+            throw new InvalidFormulaException("Unexpected character " + readCharacter + " detected. Only operator or closing parenthesis allowed here.");
         }
         buff = new StringBuilder(Character.toString(readCharacter));
     }
@@ -141,25 +139,28 @@ public class LexicalAnalyzer {
         if (readCharacter == Parenthesis.CLOSE) {
             throw new RuntimeException("Illegal state");
         }
-        buff = new StringBuilder();
-        if (isDigit(readCharacter) || isAlgebraicSign(readCharacter) || readCharacter == Parenthesis.OPEN || isAlpha(readCharacter)) {
-            buff.append(readCharacter);
+        if (!isDigit(readCharacter) && !isAlgebraicSign(readCharacter) && readCharacter != Parenthesis.OPEN && !isAlpha(readCharacter)) {
+            throw new RuntimeException("Illegal char read " + readCharacter);
         }
+        buff = new StringBuilder(Character.toString(readCharacter));
+
         if (readCharacter == Parenthesis.OPEN) {
             state = State.PARENTHESIS_OPEN;
         } else if (nextC != null && isDigit(nextC)) {
             state = State.DIGIT_READING;
         } else if (nextC != null && isAlpha(nextC)) {
             state = State.CHARACTER_READING;
-        } else if (isDigit(readCharacter) && (nextC == null || isOperator(nextC) || nextC == Parenthesis.CLOSE)) {
-            state = State.DIGIT_COMPLETED;
-        } else if (isAlpha(readCharacter) && (nextC == null || isOperator(nextC) || nextC == Parenthesis.CLOSE)) {
-            if (buffContainsConstant()) {
-                state = State.CONSTANT_COMPLETED;
-            } else if (buffContainsKeyword()) {
-                state = State.POSTFIX_OPERATION;
-            } else {
-                state = State.VAR_COMPLETED;
+        } else if (nextC == null || isOperator(nextC) || nextC == Parenthesis.CLOSE) {
+            if (isDigit(readCharacter)) {
+                state = State.DIGIT_COMPLETED;
+            } else if (isAlpha(readCharacter)) {
+                if (buffContainsConstant()) {
+                    state = State.CONSTANT_COMPLETED;
+                } else if (buffContainsKeyword()) {
+                    state = State.POSTFIX_OPERATION;
+                } else {
+                    state = State.VAR_COMPLETED;
+                }
             }
         }
     }

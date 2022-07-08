@@ -12,8 +12,6 @@ import java.util.List;
 public class FunctionParser {
 
     private static boolean debug = false;
-    private LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer();
-    private ASTBuilder astBuilder = new ASTBuilder();
 
     public static void main(String... args) {
         if (args == null || args.length < 1 || args[0] == null) {
@@ -37,6 +35,9 @@ public class FunctionParser {
     }
 
     public Expression parse(String input) {
+        LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer();
+        ASTBuilder astBuilder = new ASTBuilder();
+
         List<Token> tokens = lexicalAnalyzer.parseToTokens(cleanWhitespaces(input));
         debug(tokens);
         Expression expression = astBuilder.tokensToExpression(tokens);

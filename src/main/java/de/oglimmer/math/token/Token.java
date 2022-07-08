@@ -7,6 +7,7 @@ public class Token {
 
     private String data;
     private Type type;
+
     public Token(String data, Type type) {
         this.data = data;
         this.type = type;

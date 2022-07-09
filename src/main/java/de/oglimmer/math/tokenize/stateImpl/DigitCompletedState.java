@@ -2,7 +2,7 @@ package de.oglimmer.math.tokenize.stateImpl;
 
 import de.oglimmer.math.tokenize.Token;
 
-public class DigitCompletedState extends DigitOrCharacterReadingCompletedState {
+public class DigitCompletedState extends DigitReadingCompletedState {
 
     private final String number;
 

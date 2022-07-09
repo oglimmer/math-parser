@@ -16,18 +16,10 @@ public class Token implements Action {
 
     public ASTNode toASTNode() {
         switch (type) {
-            case CONSTANT:
-                return new Constant(data);
             case NUMBER:
-                return new Number(Double.parseDouble(data));
+                return new Number(Long.parseLong(data));
             case OPERATOR:
                 return new Operation(data);
-            case PARENTHESIS:
-                return new Parenthesis(data.charAt(0));
-            case POSTFIX_OPERATOR:
-                return new PostfixOperation(data);
-            case VARIABLE:
-                return new Variable(data);
         }
         return null;
     }
@@ -41,7 +33,7 @@ public class Token implements Action {
     }
 
     public enum Type {
-        CONSTANT, NUMBER, OPERATOR, PARENTHESIS, POSTFIX_OPERATOR, VARIABLE
+        NUMBER, OPERATOR
     }
 
 }

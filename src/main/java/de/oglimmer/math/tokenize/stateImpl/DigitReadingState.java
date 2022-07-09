@@ -2,7 +2,6 @@ package de.oglimmer.math.tokenize.stateImpl;
 
 import de.oglimmer.fsm.Transition;
 import de.oglimmer.math.InvalidFormulaException;
-import de.oglimmer.math.astnode.Parenthesis;
 import de.oglimmer.math.tokenize.ReadCharacterEvent;
 import de.oglimmer.math.tokenize.Token;
 
@@ -27,7 +26,7 @@ public class DigitReadingState extends ReadCharToTokenState {
         char readCharacter = inputEvent.getReadCharacter();
         Character nextC = inputEvent.getNextCharacter();
         buff.append(readCharacter);
-        if (nextC == null || isOperator(nextC) || nextC == Parenthesis.CLOSE) {
+        if (nextC == null || isOperator(nextC)) {
             return new DigitCompletedState(buff.toString()).getTransitionResult();
         }
         return this.getTransitionResult();

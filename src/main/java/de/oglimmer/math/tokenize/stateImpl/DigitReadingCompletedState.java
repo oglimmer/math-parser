@@ -2,15 +2,14 @@ package de.oglimmer.math.tokenize.stateImpl;
 
 import de.oglimmer.fsm.Transition;
 import de.oglimmer.math.InvalidFormulaException;
-import de.oglimmer.math.astnode.Parenthesis;
 import de.oglimmer.math.tokenize.ReadCharacterEvent;
 import de.oglimmer.math.tokenize.Token;
 
-public abstract class DigitOrCharacterReadingCompletedState extends ReadCharToTokenState {
+public abstract class DigitReadingCompletedState extends ReadCharToTokenState {
 
     @Override
     public void validate(ReadCharacterEvent inputEvent) {
-        if (!isOperator(inputEvent.getReadCharacter()) && inputEvent.getReadCharacter() != Parenthesis.CLOSE) {
+        if (!isOperator(inputEvent.getReadCharacter())) {
             throw new InvalidFormulaException("Unexpected character " + inputEvent.getReadCharacter() + " detected. Only operator or closing parenthesis allowed here.");
         }
     }
@@ -20,8 +19,6 @@ public abstract class DigitOrCharacterReadingCompletedState extends ReadCharToTo
         char readCharacter = inputEvent.getReadCharacter();
         if (isOperator(readCharacter)) {
             return new OperationState(readCharacter).getTransitionResult();
-        } else if (readCharacter == Parenthesis.CLOSE) {
-            return new ParenthesisClosedState(readCharacter).getTransitionResult();
         }
         return null;
     }

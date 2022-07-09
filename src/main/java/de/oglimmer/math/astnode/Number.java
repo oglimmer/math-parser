@@ -2,12 +2,10 @@ package de.oglimmer.math.astnode;
 
 import de.oglimmer.math.InvalidStateException;
 
-import java.util.Map;
-
 public class Number implements Expression {
-    private final double val;
+    private final long val;
 
-    public Number(double val) {
+    public Number(long val) {
         this.val = val;
     }
 
@@ -20,18 +18,8 @@ public class Number implements Expression {
     }
 
     @Override
-    public double resolve(Map<String, Double> vars) {
+    public long resolve() {
         return val;
-    }
-
-    @Override
-    public boolean openForInput() {
-        return false;
-    }
-
-    @Override
-    public Expression simplify() {
-        return this;
     }
 
     @Override

@@ -19,34 +19,19 @@ public class FunctionParser {
             return;
         }
         String input = args[0];
-        HashMap<String, Double> vars = createVarMap(args);
         Expression exp = new FunctionParser().parse(input);
-        System.out.println(exp.resolve(vars));
-    }
-
-    private static HashMap<String, Double> createVarMap(String[] args) {
-        HashMap<String, Double> vars = new HashMap<>();
-        for (int i = 2; i < args.length; i += 2) {
-            if (args[i - 1] != null && args[i] != null) {
-                vars.put(args[i - 1], Double.parseDouble(args[i]));
-            }
-        }
-        return vars;
+        System.out.println(exp.resolve());
     }
 
     public Expression parse(String input) {
         LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer();
         ASTBuilder astBuilder = new ASTBuilder();
 
-        List<Token> tokens = lexicalAnalyzer.parseToTokens(cleanWhitespaces(input));
+        List<Token> tokens = lexicalAnalyzer.parseToTokens(input);
         debug(tokens);
         Expression expression = astBuilder.tokensToExpression(tokens);
         debug(expression);
         return expression;
-    }
-
-    private String cleanWhitespaces(String input) {
-        return input.replaceAll("\\s\r\n", "");
     }
 
     private void debug(Object msg) {

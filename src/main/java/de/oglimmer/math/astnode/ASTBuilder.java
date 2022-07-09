@@ -13,7 +13,7 @@ public class ASTBuilder {
                 (result, token) -> accumulator(result, token),
                 (result, element) -> result);
         resultExp.validate();
-        return resultExp.simplify();
+        return resultExp;
     }
 
     private Expression accumulator(Expression result, Token token) {

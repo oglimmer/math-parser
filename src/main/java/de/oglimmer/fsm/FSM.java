@@ -11,9 +11,9 @@ public class FSM<E extends Event, A extends Action> {
 
     public A transition(E inputEvent) {
         state.validate(inputEvent);
-        TransitionResult<A> transitionResult = state.transition(inputEvent);
-        state = transitionResult.getState();
-        return transitionResult.getAction();
+        Transition<A> transition = state.transition(inputEvent);
+        state = transition.getTargetState();
+        return transition.getAction();
     }
 
 }

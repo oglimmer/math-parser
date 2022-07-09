@@ -1,7 +1,7 @@
 package de.oglimmer.math.tokenize.stateImpl;
 
 import de.oglimmer.fsm.State;
-import de.oglimmer.fsm.TransitionResult;
+import de.oglimmer.fsm.Transition;
 import de.oglimmer.math.astnode.Constant;
 import de.oglimmer.math.astnode.Operation;
 import de.oglimmer.math.astnode.PostfixOperation;
@@ -36,8 +36,8 @@ public abstract class ReadCharToTokenState implements State<ReadCharacterEvent, 
 
     protected abstract Token getToken();
 
-    protected TransitionResult<Token> getTransitionResult() {
-        return new TransitionResult<>(this, getToken());
+    protected Transition<Token> getTransitionResult() {
+        return new Transition<>(this, getToken());
     }
 
 

@@ -1,6 +1,6 @@
 package de.oglimmer.math.tokenize.stateImpl;
 
-import de.oglimmer.fsm.TransitionResult;
+import de.oglimmer.fsm.Transition;
 import de.oglimmer.math.InvalidFormulaException;
 import de.oglimmer.math.astnode.Parenthesis;
 import de.oglimmer.math.tokenize.ReadCharacterEvent;
@@ -23,7 +23,7 @@ public class DigitReadingState extends ReadCharToTokenState {
     }
 
     @Override
-    public TransitionResult<Token> transition(ReadCharacterEvent inputEvent) {
+    public Transition<Token> transition(ReadCharacterEvent inputEvent) {
         char readCharacter = inputEvent.getReadCharacter();
         Character nextC = inputEvent.getNextCharacter();
         buff.append(readCharacter);

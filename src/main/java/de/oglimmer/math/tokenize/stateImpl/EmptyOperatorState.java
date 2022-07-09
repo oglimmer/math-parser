@@ -23,11 +23,7 @@ public abstract class EmptyOperatorState extends ReadCharToTokenState {
         Character nextC = inputEvent.getNextCharacter();
         if (nextC != null && isDigit(nextC)) {
             return new DigitReadingState(readCharacter).getTransitionResult();
-        } else if (nextC == null || isOperator(nextC)) {
-            if (isDigit(readCharacter)) {
-                return new DigitCompletedState(Character.toString(readCharacter)).getTransitionResult();
-            }
         }
-        return getTransitionResult();
+        return new DigitCompletedState(Character.toString(readCharacter)).getTransitionResult();
     }
 }

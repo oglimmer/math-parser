@@ -23,9 +23,8 @@ public class DigitReadingState extends ReadCharToTokenState {
 
     @Override
     public Transition<Token> transition(ReadCharacterEvent inputEvent) {
-        char readCharacter = inputEvent.getReadCharacter();
+        buff.append(inputEvent.getReadCharacter());
         Character nextC = inputEvent.getNextCharacter();
-        buff.append(readCharacter);
         if (nextC == null || isOperator(nextC)) {
             return new DigitCompletedState(buff.toString()).getTransitionResult();
         }

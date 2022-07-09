@@ -23,10 +23,7 @@ public class DigitCompletedState extends ReadCharToTokenState {
     @Override
     public Transition<Token> transition(ReadCharacterEvent inputEvent) {
         char readCharacter = inputEvent.getReadCharacter();
-        if (isOperator(readCharacter)) {
-            return new OperationState(readCharacter).getTransitionResult();
-        }
-        return null;
+        return new OperationState(readCharacter).getTransitionResult();
     }
 
     @Override

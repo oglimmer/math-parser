@@ -8,16 +8,13 @@ public class Parenthesis implements Expression {
 
     public static final char OPEN = '(';
     public static final char CLOSE = ')';
+    private final char c;
+    private Expression nestedExp;
+    private boolean closed;
 
     public Parenthesis(char c) {
         this.c = c;
     }
-
-    private char c;
-
-    private Expression nestedExp;
-
-    private boolean closed;
 
     @Override
     public Expression add(ASTNode toAdd) {

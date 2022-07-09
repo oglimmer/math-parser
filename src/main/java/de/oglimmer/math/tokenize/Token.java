@@ -1,12 +1,13 @@
-package de.oglimmer.math.token;
+package de.oglimmer.math.tokenize;
 
+import de.oglimmer.fsm.Action;
 import de.oglimmer.math.astnode.Number;
 import de.oglimmer.math.astnode.*;
 
-public class Token {
+public class Token implements Action {
 
-    private String data;
-    private Type type;
+    private final String data;
+    private final Type type;
 
     public Token(String data, Type type) {
         this.data = data;
@@ -40,7 +41,7 @@ public class Token {
     }
 
     public enum Type {
-        CONSTANT, NUMBER, OPERATOR, PARENTHESIS, POSTFIX_OPERATOR, VARIABLE;
+        CONSTANT, NUMBER, OPERATOR, PARENTHESIS, POSTFIX_OPERATOR, VARIABLE
     }
 
 }

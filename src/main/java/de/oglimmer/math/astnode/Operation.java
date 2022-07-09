@@ -40,8 +40,8 @@ public class Operation implements ASTNode {
         DIV("/", 2),
         POWER("^", 3);
 
-        private String symbol;
-        private int precedence;
+        private final String symbol;
+        private final int precedence;
 
         OpImpl(String symbol, int precedence) {
             this.symbol = symbol;

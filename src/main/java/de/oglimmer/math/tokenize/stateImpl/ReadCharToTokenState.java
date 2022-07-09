@@ -1,18 +1,14 @@
-package de.oglimmer.math.fsm.state;
+package de.oglimmer.math.tokenize.stateImpl;
 
+import de.oglimmer.fsm.State;
+import de.oglimmer.fsm.TransitionResult;
 import de.oglimmer.math.astnode.Constant;
 import de.oglimmer.math.astnode.Operation;
 import de.oglimmer.math.astnode.PostfixOperation;
-import de.oglimmer.math.fsm.Action;
-import de.oglimmer.math.token.Token;
+import de.oglimmer.math.tokenize.ReadCharacterEvent;
+import de.oglimmer.math.tokenize.Token;
 
-public abstract class State {
-
-    abstract public void validate(Action action);
-
-    abstract public State transition(Action action);
-
-    abstract public Token getToken();
+public abstract class ReadCharToTokenState implements State<ReadCharacterEvent, Token> {
 
     protected static boolean isOperator(char c) {
         return Operation.match(c);
@@ -37,6 +33,13 @@ public abstract class State {
     protected static boolean containsConstant(String string) {
         return Constant.match(string);
     }
+
+    protected abstract Token getToken();
+
+    protected TransitionResult<Token> getTransitionResult() {
+        return new TransitionResult<>(this, getToken());
+    }
+
 
 }
 

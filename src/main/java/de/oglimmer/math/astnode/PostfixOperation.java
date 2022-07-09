@@ -6,7 +6,7 @@ import java.util.Map;
 public class PostfixOperation implements Expression {
 
     protected Expression nestedExp;
-    private Type type;
+    private final Type type;
 
     public PostfixOperation(String name) {
         this.type = Type.valueOf(name.toUpperCase());
@@ -36,7 +36,7 @@ public class PostfixOperation implements Expression {
 
     @Override
     public boolean openForInput() {
-        return nestedExp != null ? nestedExp.openForInput() : true;
+        return nestedExp == null || nestedExp.openForInput();
     }
 
     @Override

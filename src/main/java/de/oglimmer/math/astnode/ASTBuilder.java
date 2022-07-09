@@ -1,6 +1,6 @@
 package de.oglimmer.math.astnode;
 
-import de.oglimmer.math.token.Token;
+import de.oglimmer.math.tokenize.Token;
 
 import java.util.List;
 

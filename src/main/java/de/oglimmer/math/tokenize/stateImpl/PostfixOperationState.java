@@ -1,17 +1,17 @@
-package de.oglimmer.math.fsm.state;
+package de.oglimmer.math.tokenize.stateImpl;
 
-import de.oglimmer.math.token.Token;
+import de.oglimmer.math.tokenize.Token;
 
 public class PostfixOperationState extends EmptyOperatorParenthesisOpenState {
 
-    private String operatorName;
+    private final String operatorName;
 
     public PostfixOperationState(String operatorName) {
         this.operatorName = operatorName;
     }
 
     @Override
-    public Token getToken() {
+    protected Token getToken() {
         return new Token(operatorName, Token.Type.POSTFIX_OPERATOR);
     }
 

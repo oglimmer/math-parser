@@ -1,17 +1,17 @@
-package de.oglimmer.math.fsm.state;
+package de.oglimmer.math.tokenize.stateImpl;
 
-import de.oglimmer.math.token.Token;
+import de.oglimmer.math.tokenize.Token;
 
 public class ConstantCompletedState extends DigitOrCharacterReadingCompletedState {
 
-    private String constant;
+    private final String constant;
 
     public ConstantCompletedState(String constant) {
         this.constant = constant;
     }
 
     @Override
-    public Token getToken() {
+    protected Token getToken() {
         return new Token(constant, Token.Type.CONSTANT);
     }
 

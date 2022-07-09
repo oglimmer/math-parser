@@ -3,15 +3,15 @@ package de.oglimmer.math;
 
 import de.oglimmer.math.astnode.ASTBuilder;
 import de.oglimmer.math.astnode.Expression;
-import de.oglimmer.math.token.LexicalAnalyzer;
-import de.oglimmer.math.token.Token;
+import de.oglimmer.math.tokenize.LexicalAnalyzer;
+import de.oglimmer.math.tokenize.Token;
 
 import java.util.HashMap;
 import java.util.List;
 
 public class FunctionParser {
 
-    private static boolean debug = false;
+    private static final boolean debug = false;
 
     public static void main(String... args) {
         if (args == null || args.length < 1 || args[0] == null) {

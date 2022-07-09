@@ -1,5 +1,7 @@
 package de.oglimmer.math.astnode;
 
+import de.oglimmer.math.InvalidStateException;
+
 import java.util.Arrays;
 import java.util.Map;
 
@@ -69,7 +71,7 @@ public class Operation implements ASTNode {
                 case POWER:
                     return Math.pow(expressions[0].resolve(vars), expressions[1].resolve(vars));
                 default:
-                    throw new RuntimeException();
+                    throw new InvalidStateException("Unknown enum type " + this);
             }
         }
 

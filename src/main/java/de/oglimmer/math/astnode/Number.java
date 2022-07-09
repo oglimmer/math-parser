@@ -1,5 +1,7 @@
 package de.oglimmer.math.astnode;
 
+import de.oglimmer.math.InvalidStateException;
+
 import java.util.Map;
 
 public class Number implements Expression {
@@ -12,7 +14,7 @@ public class Number implements Expression {
     @Override
     public Expression add(ASTNode toAdd) {
         if (!(toAdd instanceof Operation)) {
-            throw new RuntimeException("illegal class " + toAdd.getClass().getName() + " on val " + val);
+            throw new InvalidStateException("illegal class " + toAdd.getClass().getName() + " on val " + val);
         }
         return new BinaryOperationExpression(this, (Operation) toAdd);
     }

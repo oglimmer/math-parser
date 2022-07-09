@@ -1,5 +1,7 @@
 package de.oglimmer.math.astnode;
 
+import de.oglimmer.math.InvalidStateException;
+
 import java.util.Arrays;
 import java.util.Map;
 
@@ -78,7 +80,7 @@ public class PostfixOperation implements Expression {
                 case LOGTEN:
                     return Math.log10(resolve);
                 default:
-                    throw new RuntimeException();
+                    throw new InvalidStateException("Unknown enum type " + this);
             }
         }
     }

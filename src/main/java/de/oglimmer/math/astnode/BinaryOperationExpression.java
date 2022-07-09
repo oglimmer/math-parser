@@ -1,6 +1,7 @@
 package de.oglimmer.math.astnode;
 
 import de.oglimmer.math.InvalidFormulaException;
+import de.oglimmer.math.InvalidStateException;
 
 import java.util.Map;
 
@@ -29,7 +30,7 @@ public class BinaryOperationExpression implements Expression {
         }
         if (toAdd instanceof Operation) {
             if (op2 == null) {
-                throw new RuntimeException("Adding an operation to a BinaryOperationExpression is illegal if the second operand is still null");
+                throw new InvalidStateException("Adding an operation to a BinaryOperationExpression is illegal if the second operand is still null");
             }
             Operation opToAdd = (Operation) toAdd;
             if (op.getPrecedence() < opToAdd.getPrecedence()) {
@@ -39,7 +40,7 @@ public class BinaryOperationExpression implements Expression {
             }
         } else {
             if (!(toAdd instanceof Expression)) {
-                throw new RuntimeException("Illegal class on second operand. " + toAdd.getClass().getName());
+                throw new InvalidStateException("Illegal class on second operand. " + toAdd.getClass().getName());
             }
             op2 = (Expression) toAdd;
             return this;

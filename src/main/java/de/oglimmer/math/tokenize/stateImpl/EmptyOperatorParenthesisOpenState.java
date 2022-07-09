@@ -1,6 +1,7 @@
 package de.oglimmer.math.tokenize.stateImpl;
 
 import de.oglimmer.fsm.TransitionResult;
+import de.oglimmer.math.InvalidStateException;
 import de.oglimmer.math.astnode.Parenthesis;
 import de.oglimmer.math.tokenize.ReadCharacterEvent;
 import de.oglimmer.math.tokenize.Token;
@@ -10,13 +11,13 @@ public abstract class EmptyOperatorParenthesisOpenState extends ReadCharToTokenS
     public void validate(ReadCharacterEvent inputEvent) {
         char readCharacter = inputEvent.getReadCharacter();
         if (isOperator(readCharacter) && !isAlgebraicSign(readCharacter)) {
-            throw new RuntimeException("Illegal state");
+            throw new InvalidStateException("Illegal state");
         }
         if (readCharacter == Parenthesis.CLOSE) {
-            throw new RuntimeException("Illegal state");
+            throw new InvalidStateException("Illegal state");
         }
         if (!isDigit(readCharacter) && !isAlgebraicSign(readCharacter) && readCharacter != Parenthesis.OPEN && !isAlpha(readCharacter)) {
-            throw new RuntimeException("Illegal char read " + readCharacter);
+            throw new InvalidStateException("Illegal char read " + readCharacter);
         }
     }
 

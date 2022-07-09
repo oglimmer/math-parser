@@ -1,5 +1,7 @@
 package de.oglimmer.math.astnode;
 
+import de.oglimmer.math.InvalidStateException;
+
 import java.util.Arrays;
 import java.util.Map;
 
@@ -18,7 +20,7 @@ public class Constant implements Expression {
     @Override
     public Expression add(ASTNode toAdd) {
         if (!(toAdd instanceof Operation)) {
-            throw new RuntimeException("illegal class " + toAdd.getClass().getName() + " on supportedConstant " + supportedConstant);
+            throw new InvalidStateException("illegal class " + toAdd.getClass().getName() + " on supportedConstant " + supportedConstant);
         }
         return new BinaryOperationExpression(this, (Operation) toAdd);
     }
@@ -53,7 +55,7 @@ public class Constant implements Expression {
                 case E:
                     return Math.E;
                 default:
-                    throw new RuntimeException();
+                    throw new InvalidStateException("Unknown enum type " + this);
             }
         }
     }

@@ -1,5 +1,7 @@
 package de.oglimmer.math.astnode;
 
+import de.oglimmer.math.InvalidStateException;
+
 import java.util.Map;
 
 public class Variable implements Expression {
@@ -12,7 +14,7 @@ public class Variable implements Expression {
     @Override
     public Expression add(ASTNode toAdd) {
         if (!(toAdd instanceof Operation)) {
-            throw new RuntimeException("illegal class " + toAdd.getClass().getName() + " on name " + name);
+            throw new InvalidStateException("illegal class " + toAdd.getClass().getName() + " on name " + name);
         }
         return new BinaryOperationExpression(this, (Operation) toAdd);
     }
@@ -21,7 +23,7 @@ public class Variable implements Expression {
     public double resolve(Map<String, Double> vars) {
         Double val = vars.get(name);
         if (val == null) {
-            throw new RuntimeException("Cannot find value for variable " + name);
+            throw new InvalidStateException("Cannot find value for variable " + name);
         }
         return val;
     }

@@ -1,5 +1,6 @@
 package de.oglimmer.math.astnode;
 
+import de.oglimmer.math.InvalidStateException;
 import de.oglimmer.math.tokenize.Token;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class ASTBuilder {
         ASTNode newASTNode = token.toASTNode();
         if (result == null) {
             if (!(newASTNode instanceof Expression)) {
-                throw new RuntimeException("Root must be an expression");
+                throw new InvalidStateException("Root must be an expression");
             }
             return (Expression) newASTNode;
         }

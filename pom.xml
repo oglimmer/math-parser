@@ -4,8 +4,15 @@
 
     <groupId>de.oglimmer</groupId>
     <artifactId>math</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
     <packaging>jar</packaging>
+
+    <scm>
+      <connection>scm:git:git://github.com/oglimmer/math-parser.git</connection>
+      <developerConnection>scm:git:git@github.com:oglimmer/math-parser.git</developerConnection>
+      <url>https://github.com/oglimmer/math-parser</url>
+      <tag>HEAD</tag>
+    </scm>    
 
     <properties>
         <maven.compiler.target>11</maven.compiler.target>
@@ -32,12 +39,16 @@
         </plugins>
     </build>
 
-  <distributionManagement>
-    <repository>
-      <id>github</id>
-      <name>GitHub Packages</name>
-      <url>https://maven.pkg.github.com/oglimmer/math-parser</url>
-    </repository>
-  </distributionManagement>
-
+	<distributionManagement>
+		<repository>
+			<id>oglimmer-repository-releases</id>
+			<name>oglimmer repository</name>
+			<url>https://mvn.oglimmer.com/releases</url>
+		</repository>
+		<snapshotRepository>
+			<id>oglimmer-repository-snapshots</id>
+			<name>oglimmer repository</name>
+			<url>https://mvn.oglimmer.com/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
 </project>
